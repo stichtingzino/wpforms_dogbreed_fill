@@ -1,3 +1,4 @@
+<?php
 /* 
  * 
  * @link        https://github.com/mjb021/wpforms_dogbreed_fill
@@ -32,7 +33,7 @@ define( 'wpf_dogbreed_fill_VERSION', '0.1.0' );
  * does not exist there, it will be searched for in the plugin directory.
  */
 if ( ! file_exists( get_home_path() . 'uploads/wpf/dogbreeds.json' ) ) {
-    $dog_breeds_file = plugin_dir_path( __FILE__ ) . 'dogbreeds.json';
+    $dog_breeds_file = plugin_dir_path( __FILE__ ) . 'data/dogbreeds.json';
 } else {
     $dog_breeds_file = get_home_path() . 'uploads/wpf/dogbreeds.json';
 }
@@ -160,3 +161,4 @@ if ( is_admin() ) {
 }
 
 add_filter( 'wpforms_field_properties', 'dynamic_fci_breeds_checkboxes', 10, 3 );
+?>
