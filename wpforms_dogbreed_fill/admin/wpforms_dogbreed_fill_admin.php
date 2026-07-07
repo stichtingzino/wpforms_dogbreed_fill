@@ -98,3 +98,4 @@ function wpf_dogbreed_fill_settings_page() {
     </div>
     <?php
 }
+?>
