@@ -56,4 +56,4 @@ jobs:
           gh release create "v${{ env.VERSION }}" ${{ env.PLUGIN_SLUG }}.zip \
             --title "Release v${{ env.VERSION }}" \
             --notes "Automated production release for version v${{ env.VERSION }}." \
-            --clobber
+            --overwrite
