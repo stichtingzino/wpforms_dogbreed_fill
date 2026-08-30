@@ -1,0 +1,59 @@
+name: Generate WordPress Plugin Zip on Main Merge
+
+on:
+  push:
+    branches:
+      - main  # Start alleen bij een push of merge naar de main-branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Nodig om bestanden aan te passen en releases te maken
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract Version & Synchronize Main PHP File
+        id: get_version
+        run: |
+          # 1. Lees het versienummer uit de VERSION file en verwijder spaties/newlines
+          VERSION=$(cat VERSION | tr -d '[:space:]')
+          echo "Gevonden versie in VERSION bestand: $VERSION"
+          
+          # Maak de variabele beschikbaar voor volgende stappen in de Action
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          
+          # 2. Synchroniseer het versienummer in het hoofd-PHP bestand van de plugin via Regex (sed)
+          # Dit zoekt naar 'Version: ...' in de WordPress header en vervangt het met de juiste versie
+          sed -i -E "s/(Version:[[:space:]]*)[0-9.]+(.*)/\1$VERSION\2/g" wpforms_dogbreed_fill/wpforms_dogbreed_fill.php
+          
+          echo "Hoofd-PHP bestand succesvol gesynchroniseerd naar versie $VERSION!"
+
+      - name: Create clean production directory & Zip
+        env:
+          PLUGIN_SLUG: "wpforms_dogbreed_fill"
+        run: |
+          # 1. Maak een tijdelijke build-map aan
+          mkdir -p build/${{ env.PLUGIN_SLUG }}
+          
+          # 2. Kopieer de zojuist bijgewerkte plugin-inhoud naar de build-map
+          rsync -rc --exclude '.git*' ./[${{ env.PLUGIN_SLUG }}]/ build/${{ env.PLUGIN_SLUG }}/
+          
+          # 3. Ga naar de build-map en zip de plugin
+          cd build
+          zip -r ../${{ env.PLUGIN_SLUG }}.zip ${{ env.PLUGIN_SLUG }}
+          cd ..
+
+      - name: Upload or Update Release Asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PLUGIN_SLUG: "wpforms_dogbreed_fill"
+        run: |
+          # Maakt een officiële GitHub release aan met het versienummer als tag (bijv. v1.0.1)
+          # Mocht de tag al bestaan, dan overschrijft (--clobber) hij het zip-bestand.
+          gh release create "v${{ env.VERSION }}" ${{ env.PLUGIN_SLUG }}.zip \
+            --title "Release v${{ env.VERSION }}" \
+            --notes "Automatisch gegenereerde productie-release voor versie v${{ env.VERSION }}." \
+            --clobber

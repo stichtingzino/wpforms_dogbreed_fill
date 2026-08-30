@@ -1,4 +1,7 @@
 <?php
+/**
+ * Add admin option to select which FCI groups to include in the breed selection.
+ */
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -16,14 +19,14 @@ function wpf_dogbreed_fill_register_settings() {
 
     add_settings_section(
         'wpf_dogbreed_fill_main_section',
-        'FCI group selection',
+        __( 'FCI group selection', 'wpforms_dogbreed_fill' ),
         '__return_false',
         'wpf_dogbreed_fill_settings'
     );
 
     add_settings_field(
         'wpf_dogbreed_fill_selected_groups',
-        'Select FCI groups',
+        __( 'Select FCI groups to include', 'wpforms_dogbreed_fill' ),
         'wpf_dogbreed_fill_render_group_field',
         'wpf_dogbreed_fill_settings',
         'wpf_dogbreed_fill_main_section'
@@ -58,7 +61,7 @@ function wpf_dogbreed_fill_render_group_field() {
     }
 
     if ( empty( $available_groups ) ) {
-        echo '<p>No FCI group data is available yet.</p>';
+        echo '<p>' . __( 'No FCI group data is available yet.', 'wpforms_dogbreed_fill' ) . '</p>';
         return;
     }
 
@@ -88,8 +91,8 @@ function wpf_dogbreed_fill_settings_page() {
     }
     ?>
     <div class="wrap">
-        <h1>FCI Dog Breed Fill settings</h1>
-        <p>Select which FCI groups should be included in the breed dropdown.</p>
+        <h1><?php _e( 'FCI Dog Breed Fill settings', 'wpforms_dogbreed_fill' ); ?></h1>
+        <p><?php _e( 'Select which FCI groups should be included in the breed dropdown.', 'wpforms_dogbreed_fill' ); ?></p>
         <form method="post" action="options.php">
             <?php settings_fields( 'wpf_dogbreed_fill_settings' ); ?>
             <?php do_settings_sections( 'wpf_dogbreed_fill_settings' ); ?>
@@ -98,3 +101,4 @@ function wpf_dogbreed_fill_settings_page() {
     </div>
     <?php
 }
+?>
