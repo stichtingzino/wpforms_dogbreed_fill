@@ -1,3 +1,99 @@
-wpforms_dogbreed_fill.zip
-venv
+# ==============================================================================
+# 1. GENERAL FILES & OPERATING SYSTEMS
+# ==============================================================================
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+*.zip
+*.swp
+.vscode/
+.idea/
+
+# ==============================================================================
+# 2. WORDPRESS & PHP (PLUGIN SPECIFIC)
+# ==============================================================================
+# Exclude vendor folder if you are using Composer
+**/vendor/
+
+# WordPress core folders (in case you have the entire WP installation locally)
+wp-admin/
+wp-includes/
+wp-content/plugins/
+wp-content/themes/
+wp-content/uploads/
+wp-config.php
+
+# Ensure YOUR specific plugin is tracked (replace 'your-plugin-folder'!)
+!wp-content/plugins/your-plugin-folder/
+
+# Node/NPM folders if you use build tools for your plugin (e.g., for Gutenberg blocks)
+**/node_modules/
+**/dist/
+**/npm-debug.log*
+
+# SASS/Less cache
+.sass-cache/
+
+# ==============================================================================
+# 3. PYTHON SPECIFIC
+# ==============================================================================
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+target/
+
+# Package & distribution files
+*.egg-info/
+.eggs/
+dist/
+build/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Python testing and coverage
+.htmlcov/
+.tox/
+.nosexy/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.mo
+*.pot
+.pytest_cache/
+
+# ==============================================================================
+# 4. SECURITY & ENVIRONMENT VARIABLES
+# ==============================================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.envrc
+wp-config-sample.php
+
+# =============================================================================
+# 5. DEPENDENCIES and other tools
+# ==============================================================================
 .aider*
+.continueignore

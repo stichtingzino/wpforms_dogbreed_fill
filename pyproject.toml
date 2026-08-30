@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fci-dogbreeds"
+version = "0.1.1"
+description = "Extract FCI registered dog breeds data in multiple languages using Gemini API"
+readme = "README.md"
+license = {text = "GPL-3.0-only"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Mark", email = "mark@example.com"}
+]
+keywords = ["FCI", "dog breeds", "kennel club", "Gemini API", "data extraction"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Utilities",
+    "Topic :: Database",
+]
+dependencies = [
+    "google-genai>=0.1.0",
+    "pydantic>=2.0.0",
+    "onepassword-sdk>=0.4.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.0.0",
+    "flake8>=7.0.0",
+    "pylance>=0.1.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+]
+
+[project.scripts]
+get-dogbreeds = "fci_dogbreeds.gen_breed_file:get_dogbreeds"
+
+[project.urls]
+Homepage = "https://github.com/example/fci-dogbreeds"
+Repository = "https://github.com/example/fci-dogbreeds.git"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310", "py311", "py312", "py313", "py314"]
+
+[tool.flake8]
+max-line-length = 88
+exclude = ["venv/*", ".git/*", "__pycache__/*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]

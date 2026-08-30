@@ -11,33 +11,33 @@ The best way to use this is to add a selection choice to your form and use the w
 Another option is to put the word "allraces" in the label, this will generate a selection list based on the entire list of breeds but divided by the group description, e.g. "Terries","Pointing Dogs", "Retrieves - Flushing Dogs - Water Dogs", within each group the further selection will be opened.
 
 ## Input source
-The following (dutch) prompt can be used to request updated data from gemini, put this directly in the AI search prompt from google and it should provide the resulting data as json and csv in 4 different languages.
+The following prompt can be used to request updated data from Gemini. Put this directly in the AI search prompt from Google and it should provide the resulting data as JSON and CSV in 4 different languages.
 
 ```
-Je bent een data-expert gespecialiseerd in kynologie. Genereer een uitgebreid overzicht van hondenrassen per officiële FCI-rasgroep (1 tot en met 10), gebaseerd op de rassen uit de database van het Nederlandse LICG. 
+You are a data expert specializing in cynology. Generate a comprehensive overview of dog breeds per official FCI breed group (1 through 10), based on the breeds from the Dutch LICG database. 
 
-Ik heb deze data nodig in vier verschillende talen: Engels, Frans, Duits en Nederlands. Genereer voor ELKE taal een apart CSV- en JSON-codeblok, zodat ik deze eenvoudig kan opslaan als losse bestanden per taal. Vertaal zowel de namen van de FCI-groepen als de namen van de hondenrassen naar de officiële kynologische benamingen van de doeltaal.
+I need this data in four different languages: English, French, German, and Dutch. Generate for EACH language a separate CSV and JSON code block, so I can easily save them as separate files per language. Translate both the names of the FCI groups and the names of the dog breeds to the official cynological designations of the target language.
 
-Hanteer voor elk taalbestand de volgende strikte structuur:
+Follow this strict structure for each language file:
 
-### [TAALNAAM] DATASET
+### [LANGUAGE NAME] DATASET
 
-1. CSV-formaat:
-- Bestandsnaamindicatie: fci_rassen_[taalcode].csv
-- Kolommen: FCI_Group, Group_Name, Breeds
-- Gebruik een komma (,) als kolomscheider.
-- Gebruik een puntkomma (;) om de verschillende hondenrassen binnen de kolom 'Breeds' te scheiden.
+1. CSV format:
+- Filename indication: fci_rassen_[language_code].csv
+- Columns: FCI_Group, Group_Name, Breeds
+- Use a comma (,) as column separator.
+- Use a semicolon (;) to separate the different dog breeds within the 'Breeds' column.
 
-2. JSON-formaat:
-- Bestandsnaamindicatie: fci_rassen_[taalcode].json
-- Structuur: Geldige JSON-array van objecten.
-- Keys: "fci_group" (integer), "group_name" (string), "breeds" (array van strings).
+2. JSON format:
+- Filename indication: fci_rassen_[language_code].json
+- Structure: Valid JSON array of objects.
+- Keys: "fci_group" (integer), "group_name" (string), "breeds" (array of strings).
 
-Genereer achtereenvolgens de blokken voor:
-1. Nederlands (NL)
-2. Engels (EN)
-3. Frans (FR)
-4. Duits (DE)
+Generate the blocks sequentially for:
+1. Dutch (NL)
+2. English (EN)
+3. French (FR)
+4. German (DE)
 
-Geef geen inleidende praatjes, start direct met het eerste taalblok.
+Do not give introductory comments, start directly with the first language block.
 ```

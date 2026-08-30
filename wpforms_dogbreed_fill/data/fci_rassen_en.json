@@ -1,0 +1,220 @@
+[
+  {
+    "fci_group": 1,
+    "group_name": "Herdershonden en Veehouders",
+    "breeds": [
+      "Duitse Herdershond",
+      "Mechelse Herder",
+      "Hollandse Herder",
+      "Bouvier des Flandres",
+      "Border Collie",
+      "Australian Shepherd",
+      "Schapendoes",
+      "Welsh Corgi Pembroke",
+      "Welsh Corgi Cardigan",
+      "Shetland Sheepdog",
+      "Saarlooswolfhond",
+      "Komondor",
+      "Puli",
+      "Kuvasz",
+      "Briard",
+      "Beauceron",
+      "Tsjechoslowaakse Wolfhond",
+      "Zwitserse Witte Herder",
+      "Australian Kelpie",
+      "Schipperke"
+    ]
+  },
+  {
+    "fci_group": 2,
+    "group_name": "Pinschers, Schnauzers, Molossers en Zwitserse Sennenhonden",
+    "breeds": [
+      "Boxer",
+      "Duitse Dog",
+      "Rottweiler",
+      "Dobermann",
+      "Berner Sennenhond",
+      "Grote Zwitserse Sennenhond",
+      "Appenzeller Sennenhond",
+      "Entlebucher Sennenhond",
+      "Newfoundlander",
+      "Sint-Bernard",
+      "Engelse Bulldog",
+      "Bullmastiff",
+      "Mastiff",
+      "Dogo Argentino",
+      "Shar-Pei",
+      "Middenslag Schnauzer",
+      "Dwergschnauzer",
+      "Riesenschnauzer",
+      "Dwergpinscher",
+      "Affenpinscher",
+      "Cane Corso",
+      "Hovawart",
+      "Leonberger",
+      "Landseer ECT",
+      "Bordeauxdog"
+    ]
+  },
+  {
+    "fci_group": 3,
+    "group_name": "Terriërs",
+    "breeds": [
+      "Airedale Terrier",
+      "Staffordshire Bull Terrier",
+      "American Staffordshire Terrier",
+      "Bull Terrier",
+      "Foxterriër Gladhaar",
+      "Foxterriër Draadhaar",
+      "Jack Russell Terrier",
+      "Cairn Terrier",
+      "West Highland White Terrier",
+      "Yorkshire Terrier",
+      "Irish Soft Coated Wheaten Terrier",
+      "Schotse Terrier",
+      "Border Terrier",
+      "Bedlington Terrier",
+      "Welsh Terrier",
+      "Kerry Blue Terrier"
+    ]
+  },
+  {
+    "fci_group": 4,
+    "group_name": "Teckels",
+    "breeds": [
+      "Kortharige Teckel",
+      "Langharige Teckel",
+      "Ruwharige Teckel",
+      "Dwergteckel Korthaar",
+      "Dwergteckel Langhaar",
+      "Dwergteckel Ruwhaar",
+      "Kaninchen Teckel Korthaar",
+      "Kaninchen Teckel Langhaar",
+      "Kaninchen Teckel Ruwhaar"
+    ]
+  },
+  {
+    "fci_group": 5,
+    "group_name": "Spitsen en oertypen",
+    "breeds": [
+      "Siberische Husky",
+      "Alaskan Malamute",
+      "Samojeed",
+      "Akita",
+      "Shiba",
+      "Keeshond",
+      "Chow Chow",
+      "Basenji",
+      "Finse Spits",
+      "Noorse Elandhond",
+      "Podenco Ibicenco",
+      "Podenco Canario",
+      "Cirneco dell'Etna",
+      "Zweedse Lappenhond",
+      "Laplandse Herdershond"
+    ]
+  },
+  {
+    "fci_group": 6,
+    "group_name": "Lopende honden en zweethonden",
+    "breeds": [
+      "Beagle",
+      "Basset Hound",
+      "Dalmatiër",
+      "Rhodesian Ridgeback",
+      "Bloedhond",
+      "Basset Artésien Normand",
+      "Grand Basset Griffon Vendéen",
+      "Petit Basset Griffon Vendéen",
+      "Drever",
+      "Porcelaine",
+      "Beagle-Harrier"
+    ]
+  },
+  {
+    "fci_group": 7,
+    "group_name": "Voorstaande honden",
+    "breeds": [
+      "Duitse Staande Hond Korthaar",
+      "Duitse Staande Hond Draadhaar",
+      "Duitse Staande Hond Langhaar",
+      "Weimaraner",
+      "Épagneul Breton",
+      "Stabijhoun",
+      "Wetterhoun",
+      "Drentsche Patrijshond",
+      "Vizsla Korthaar",
+      "Vizsla Draadhaar",
+      "Engelse Setter",
+      "Gordon Setter",
+      "Ierse Setter",
+      "Pointer",
+      "Spinone Italiano"
+    ]
+  },
+  {
+    "fci_group": 8,
+    "group_name": "Apporterende, opstotende en waterhonden",
+    "breeds": [
+      "Labrador Retriever",
+      "Golden Retriever",
+      "Flatcoated Retriever",
+      "Nova Scotia Duck Tolling Retriever",
+      "Curly Coated Retriever",
+      "Chesapeake Bay Retriever",
+      "Engelse Springer Spaniel",
+      "Welsh Springer Spaniel",
+      "Engelse Cocker Spaniel",
+      "Amerikaanse Cocker Spaniel",
+      "Het Nederlandse Kooikerhondje",
+      "Spaanse Waterhond",
+      "Portugese Waterhond",
+      "Barbet",
+      "Clumber Spaniel"
+    ]
+  },
+  {
+    "fci_group": 9,
+    "group_name": "Gezelschapshonden",
+    "breeds": [
+      "Grote Poedel",
+      "Middenslag Poedel",
+      "Dwergpoedel",
+      "Toy Poedel",
+      "Franse Bulldog",
+      "Mopshond",
+      "Chihuahua",
+      "Cavalier King Charles Spaniel",
+      "King Charles Spaniel",
+      "Shih Tzu",
+      "Lhasa Apso",
+      "Tibetaanse Terrier",
+      "Pekinees",
+      "Maltezer",
+      "Havanezer",
+      "Bolognezer",
+      "Bichon Frisé",
+      "Vlinderhondje",
+      "Nachtvlinderhondje",
+      "Chinees Naakthondje",
+      "Boston Terrier"
+    ]
+  },
+  {
+    "fci_group": 10,
+    "group_name": "Windhonden",
+    "breeds": [
+      "Greyhound",
+      "Whippet",
+      "Afghaanse Windhond",
+      "Saluki",
+      "Barsoi",
+      "Ierse Wolfshond",
+      "Schotse Hertenhond",
+      "Italiaans Windhondje",
+      "Galgo Español",
+      "Azawakh",
+      "Sloughi"
+    ]
+  }
+]
