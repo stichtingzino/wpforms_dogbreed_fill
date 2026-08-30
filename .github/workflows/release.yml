@@ -51,9 +51,17 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PLUGIN_SLUG: "wpforms_dogbreed_fill"
         run: |
-          # Create an official GitHub release with the version number as the tag (e.g., v1.0.1)
-          # If the tag already exists, it overwrites the zip file.
-          gh release create "v${{ env.VERSION }}" ${{ env.PLUGIN_SLUG }}.zip \
-            --title "Release v${{ env.VERSION }}" \
-            --notes "Automated production release for version v${{ env.VERSION }}." \
-            --overwrite
+          TAG_NAME="v${{ env.VERSION }}"
+          
+          # Controleer of de release al bestaat op GitHub
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            echo "Release $TAG_NAME bestaat al. Asset wordt bijgewerkt..."
+            # Upload het nieuwe zip-bestand naar de bestaande release en overschrijf het oude bestand
+            gh release upload "$TAG_NAME" ${{ env.PLUGIN_SLUG }}.zip --clobber
+          else
+            echo "Release $TAG_NAME bestaat nog niet. Nieuwe release wordt aangemaakt..."
+            # Maak een gloednieuwe release aan inclusief het zip-bestand
+            gh release create "$TAG_NAME" ${{ env.PLUGIN_SLUG }}.zip \
+              --title "Release $TAG_NAME" \
+              --notes "Automated production release for version $TAG_NAME."
+          fi
