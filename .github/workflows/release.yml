@@ -3,13 +3,13 @@ name: Generate WordPress Plugin Zip on Main Merge
 on:
   push:
     branches:
-      - main  # Start alleen bij een push of merge naar de main-branch
+      - main  # Start only on a push or merge to the main branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Nodig om bestanden aan te passen en releases te maken
+      contents: write  # Needed to modify files and create releases
 
     steps:
       - name: Checkout code
@@ -18,30 +18,30 @@ jobs:
       - name: Extract Version & Synchronize Main PHP File
         id: get_version
         run: |
-          # 1. Lees het versienummer uit de VERSION file en verwijder spaties/newlines
+          # 1. Read the version number from the VERSION file and remove spaces/newlines
           VERSION=$(cat VERSION | tr -d '[:space:]')
-          echo "Gevonden versie in VERSION bestand: $VERSION"
+          echo "Found version in VERSION file: $VERSION"
           
-          # Maak de variabele beschikbaar voor volgende stappen in de Action
+          # Make the variable available for the next steps in the Action
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           
-          # 2. Synchroniseer het versienummer in het hoofd-PHP bestand van de plugin via Regex (sed)
-          # Dit zoekt naar 'Version: ...' in de WordPress header en vervangt het met de juiste versie
+          # 2. Synchronize the version number in the main PHP file of the plugin via Regex (sed)
+          # This looks for 'Version: ...' in the WordPress header and replaces it with the correct version
           sed -i -E "s/(Version:[[:space:]]*)[0-9.]+(.*)/\1$VERSION\2/g" wpforms_dogbreed_fill/wpforms_dogbreed_fill.php
           
-          echo "Hoofd-PHP bestand succesvol gesynchroniseerd naar versie $VERSION!"
+          echo "Main PHP file successfully synchronized to version $VERSION!"
 
       - name: Create clean production directory & Zip
         env:
           PLUGIN_SLUG: "wpforms_dogbreed_fill"
         run: |
-          # 1. Maak een tijdelijke build-map aan
+          # 1. Create a temporary build map
           mkdir -p build/${{ env.PLUGIN_SLUG }}
           
-          # 2. Kopieer de zojuist bijgewerkte plugin-inhoud naar de build-map
+          # 2. Copy the recently updated plugin content to the build map
           rsync -rc --exclude '.git*' ./[${{ env.PLUGIN_SLUG }}]/ build/${{ env.PLUGIN_SLUG }}/
           
-          # 3. Ga naar de build-map en zip de plugin
+          # 3. Go to the build map and zip the plugin
           cd build
           zip -r ../${{ env.PLUGIN_SLUG }}.zip ${{ env.PLUGIN_SLUG }}
           cd ..
@@ -51,9 +51,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PLUGIN_SLUG: "wpforms_dogbreed_fill"
         run: |
-          # Maakt een officiële GitHub release aan met het versienummer als tag (bijv. v1.0.1)
-          # Mocht de tag al bestaan, dan overschrijft (--clobber) hij het zip-bestand.
+          # Create an official GitHub release with the version number as the tag (e.g., v1.0.1)
+          # If the tag already exists, it overwrites the zip file.
           gh release create "v${{ env.VERSION }}" ${{ env.PLUGIN_SLUG }}.zip \
             --title "Release v${{ env.VERSION }}" \
-            --notes "Automatisch gegenereerde productie-release voor versie v${{ env.VERSION }}." \
+            --notes "Automated production release for version v${{ env.VERSION }}." \
             --clobber
