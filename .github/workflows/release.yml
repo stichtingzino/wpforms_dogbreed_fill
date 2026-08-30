@@ -39,7 +39,7 @@ jobs:
           mkdir -p build/${{ env.PLUGIN_SLUG }}
           
           # 2. Copy the recently updated plugin content to the build map
-          rsync -rc --exclude '.git*' ./[${{ env.PLUGIN_SLUG }}]/ build/${{ env.PLUGIN_SLUG }}/
+          rsync -rc --exclude '.git*' ./${{ env.PLUGIN_SLUG }}/ build/${{ env.PLUGIN_SLUG }}/
           
           # 3. Go to the build map and zip the plugin
           cd build
