@@ -1,0 +1,50 @@
+name: Generate Python Package Release on Main Merge
+
+on:
+  push:
+    branches:
+      - main  # Start only on a push or merge to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Needed to modify files and create releases
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'  # Use the Python version specified in pyproject.toml
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build Python package
+        run: |
+          python -m build
+
+      - name: Upload or Update Release Asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="v$(cat VERSION | tr -d '[:space:]')"
+          
+          # Check if the release already exists on GitHub
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            echo "Release $TAG_NAME already exists. Asset will be updated..."
+            # Upload the new package to the existing release and overwrite the old file
+            gh release upload "$TAG_NAME" dist/*.tar.gz --clobber
+            gh release upload "$TAG_NAME" dist/*.whl --clobber
+          else
+            echo "Release $TAG_NAME does not exist. New release will be created..."
+            # Create a new release including the package
+            gh release create "$TAG_NAME" dist/*.tar.gz dist/*.whl \
+              --title "Release $TAG_NAME" \
+              --notes "Automated Python package release for version $TAG_NAME."
+          fi

@@ -7,7 +7,7 @@ import logging
 import time
 from google.genai import errors
 from fci_dogbreeds.google_functions.functions import get_data_from_gemini
-from fci_dogbreeds.config import OUTPUT_DIRECTORY
+from fci_dogbreeds.config import OUTPUT_DIRECTORY, PROMPT_LANGUAGES, TARGET_FILENAME_PREFIX
 
 logger = logging.getLogger(__name__)
 
@@ -37,29 +37,23 @@ def _export_data(base_name: str, live_data: dict) -> None:
 # 3. Main program for generating the files
 def get_dogbreeds():
     """Define the languages, display name for the prompt, and desired filename suffix"""
-    talen_config = {
-        "nl": {"prompt_taal": "Dutch", "filename": "fci_rassen_nl"},
-        "en": {"prompt_taal": "English", "filename": "fci_rassen_en"},
-        "fr": {"prompt_taal": "French", "filename": "fci_rassen_fr"},
-        "de": {"prompt_taal": "German", "filename": "fci_rassen_de"},
-    }
 
     # Create the export directory
     output_dir = OUTPUT_DIRECTORY
     os.makedirs(output_dir, exist_ok=True)
 
-    lang_keys = list(talen_config.keys())
+    lang_keys = list(PROMPT_LANGUAGES.keys())
     total_langs = len(lang_keys)
 
     # Loop through the configured languages and populate 'dog_data' live via the API
-    for idx, (lang_code, config) in enumerate(talen_config.items()):
+    for idx, lang_code in enumerate(lang_keys):
         logger.info("Fetching live data for %s", lang_code)
 
         # Fetch the live data via the Gemini API query with retry logic
         live_data = None
         for attempt in range(3):
             try:
-                live_data = get_data_from_gemini(config["prompt_taal"])
+                live_data = get_data_from_gemini(lang_code)
                 break  # Success, exit retry loop
             except (errors.ServerError, errors.ClientError) as err:
                 # Retry on 503 (Service Unavailable) and 429 (Rate Limit)
@@ -87,7 +81,7 @@ def get_dogbreeds():
         if idx < total_langs - 1:
             time.sleep(1)
 
-        base_name = os.path.join(output_dir, config["filename"])
+        base_name = os.path.join(output_dir, TARGET_FILENAME_PREFIX + lang_code.lower())
         _export_data(base_name, live_data)
 
     print(f"\nDone! All generated files are in the directory: '{output_dir}/'")

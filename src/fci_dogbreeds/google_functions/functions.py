@@ -6,7 +6,7 @@ from typing import List, Optional
 from google import genai
 from google.genai import types, errors
 from pydantic import BaseModel
-from fci_dogbreeds.config import DATA_PROMPT, GOOGLE_API_KEY
+from fci_dogbreeds.config import DATA_PROMPTS, PROMPT_LANGUAGES, GOOGLE_API_KEY
 
 logger = logging.getLogger(__name__)
 
@@ -43,9 +43,9 @@ def _get_client() -> genai.Client:
 
 def get_data_from_gemini(language: str) -> dict:
     """Sends a prompt to Gemini and enforces structured JSON output."""
-    logger.info("Fetching FCI data for language: %s...", language)
+    logger.info("Fetching FCI data for language: %s...", PROMPT_LANGUAGES[language])
 
-    prompt = DATA_PROMPT.format(language=language)
+    prompt = DATA_PROMPTS.get(language,"EN")
 
     # Use gemini-3.6-flash with Chat API as recommended by Google
     client = _get_client()

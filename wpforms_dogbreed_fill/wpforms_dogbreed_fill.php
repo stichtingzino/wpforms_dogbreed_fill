@@ -32,8 +32,23 @@ define( 'wpf_dogbreed_fill_VERSION', '0.1.1' );
  * The source file for the breeds file is searched for in uploads/wpf first, if it
  * does not exist there, it will be searched for in the plugin directory.
  */
+// 1. Get the current user or site locale (e.g., 'nl_NL' or 'en_US')
+$locale = get_user_locale(); // Alternatively, use get_locale() for general site settings
+
+// 2. Extract the part before the underscore and convert to lowercase
+$locale_parts = explode('_', $locale);
+$language_code = strtolower($locale_parts[0]);
+
+// 3. Define the allowed language codes
+$allowed_languages = ['nl', 'de', 'fr', 'en'];
+
+// 4. Verify if the language is allowed, otherwise fall back to 'nl'
+if (!in_array($language_code, $allowed_languages)) {
+    $language_code = 'nl';
+}
+
 if ( ! file_exists( get_home_path() . 'uploads/wpf/dogbreeds.json' ) ) {
-    $dog_breeds_file = plugin_dir_path( __FILE__ ) . 'data/dogbreeds.json';
+    $dog_breeds_file = plugin_dir_path( __FILE__ ) . 'data/fci_breeds_' + $language_code + '.json';
 } else {
     $dog_breeds_file = get_home_path() . 'uploads/wpf/dogbreeds.json';
 }

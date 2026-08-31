@@ -1,0 +1,44 @@
+name: Update Version Files on Version Change
+
+on:
+  push:
+    paths:
+      - VERSION  # Start only when the VERSION file is changed
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Needed to modify files and push changes
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Read new version from VERSION file
+        id: read_version
+        run: |
+          VERSION=$(cat VERSION | tr -d '[:space:]')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Found version in VERSION file: $VERSION"
+
+      - name: Update __init__.py with new version
+        run: |
+          sed -i -E "s/^__version__ = \".*\"/__version__ = \"$VERSION\"/" src/fci_dogbreeds/__init__.py
+
+      - name: Update pyproject.toml with new version
+        run: |
+          sed -i -E "s/^version = \".*\"/version = \"$VERSION\"/" pyproject.toml
+
+      - name: Update WordPress Plugin Version in PHP File
+        run: |
+          sed -i -E "s/(Version:[[:space:]]*)[0-9.]+(.*)/\1$VERSION\2/g" wpforms_dogbreed_fill/wpforms_dogbreed_fill.php
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add src/fci_dogbreeds/__init__.py pyproject.toml wpforms_dogbreed_fill/wpforms_dogbreed_fill.php
+          git commit -m "Update version to $VERSION"
+          git push
+
