@@ -9,7 +9,7 @@
  * Plugin Name: WPF Dog Breed Fill
  * Plugin URI: https://github.com/mjb021/wpforms_dogbreed_fill
  * Description: A plugin to fill dog breed options in WPForms.
- * Version: 0.1.1
+ * Version: 0.1.2-rc1
  * Author: Mark Blom
  * License: <GPL-3></GPL-3>.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
