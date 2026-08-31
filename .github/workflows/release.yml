@@ -10,14 +10,30 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # Needed to modify files and create releases
+    env:
+          PLUGIN_SLUG: "wpforms_dogbreed_fill"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Update Source Code Files
+        run: |
+          # Update version information in the main plugin file
+          sed -i "s/Version: .*/Version: $(cat VERSION | tr -d '[:space:]')/" ${{ env.PLUGIN_SLUG }}/${{ env.PLUGIN_SLUG }}.php
+      - name: Commit Updated Source Code Files
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add ${{ env.PLUGIN_SLUG }}/${{ env.PLUGIN_SLUG }}.php
+          git commit -m "Update version to $(cat VERSION | tr -d '[:space:]')"
+          
+      - name: Push Updated Source Code Files
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
 
       - name: Create clean production directory & Zip
-        env:
-          PLUGIN_SLUG: "wpforms_dogbreed_fill"
         run: |
           # 1. Create a temporary build map
           mkdir -p build/${{ env.PLUGIN_SLUG }}
@@ -33,7 +49,6 @@ jobs:
       - name: Upload or Update Release Asset
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PLUGIN_SLUG: "wpforms_dogbreed_fill"
         run: |
           TAG_NAME="v$(cat VERSION | tr -d '[:space:]')"
           
