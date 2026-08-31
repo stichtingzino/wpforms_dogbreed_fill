@@ -15,22 +15,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Extract Version & Synchronize Main PHP File
-        id: get_version
-        run: |
-          # 1. Read the version number from the VERSION file and remove spaces/newlines
-          VERSION=$(cat VERSION | tr -d '[:space:]')
-          echo "Found version in VERSION file: $VERSION"
-          
-          # Make the variable available for the next steps in the Action
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          
-          # 2. Synchronize the version number in the main PHP file of the plugin via Regex (sed)
-          # This looks for 'Version: ...' in the WordPress header and replaces it with the correct version
-          sed -i -E "s/(Version:[[:space:]]*)[0-9.]+(.*)/\1$VERSION\2/g" wpforms_dogbreed_fill/wpforms_dogbreed_fill.php
-          
-          echo "Main PHP file successfully synchronized to version $VERSION!"
-
       - name: Create clean production directory & Zip
         env:
           PLUGIN_SLUG: "wpforms_dogbreed_fill"
@@ -51,17 +35,18 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PLUGIN_SLUG: "wpforms_dogbreed_fill"
         run: |
-          TAG_NAME="v${{ env.VERSION }}"
+          TAG_NAME="v$(cat VERSION | tr -d '[:space:]')"
           
-          # Controleer of de release al bestaat op GitHub
+          # Check if the release already exists on GitHub
           if gh release view "$TAG_NAME" >/dev/null 2>&1; then
-            echo "Release $TAG_NAME bestaat al. Asset wordt bijgewerkt..."
-            # Upload het nieuwe zip-bestand naar de bestaande release en overschrijf het oude bestand
+            echo "Release $TAG_NAME already exists. Asset will be updated..."
+            # Upload the new zip file to the existing release and overwrite the old file
             gh release upload "$TAG_NAME" ${{ env.PLUGIN_SLUG }}.zip --clobber
           else
-            echo "Release $TAG_NAME bestaat nog niet. Nieuwe release wordt aangemaakt..."
-            # Maak een gloednieuwe release aan inclusief het zip-bestand
+            echo "Release $TAG_NAME does not exist. New release will be created..."
+            # Create a new release including the zip file
             gh release create "$TAG_NAME" ${{ env.PLUGIN_SLUG }}.zip \
               --title "Release $TAG_NAME" \
               --notes "Automated production release for version $TAG_NAME."
           fi
+
