@@ -97,3 +97,5 @@ wp-config-sample.php
 # ==============================================================================
 .aider*
 .continueignore
+.continue/
+src/scraper*

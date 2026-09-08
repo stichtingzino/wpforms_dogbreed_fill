@@ -32,6 +32,7 @@ dependencies = [
     "pydantic>=2.0.0",
     "onepassword-sdk>=0.4.0",
     "python-dotenv>=1.0.0",
+    "openai>=3.7.0",
 ]
 
 [project.optional-dependencies]
@@ -44,7 +45,7 @@ dev = [
 ]
 
 [project.scripts]
-get-dogbreeds = "fci_dogbreeds.gen_breed_file:get_dogbreeds"
+get-dogbreeds = "fci_dogbreeds.translate_blueprint:cli"
 
 [project.urls]
 Homepage = "https://github.com/example/fci-dogbreeds"
