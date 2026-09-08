@@ -9,7 +9,7 @@
  * Plugin Name: WPF Dog Breed Fill
  * Plugin URI: https://github.com/mjb021/wpforms_dogbreed_fill
  * Description: A plugin to fill dog breed options in WPForms.
- * Version: 0.1.2-rc1
+ * Version: 0.1.3-rc1
  * Author: Mark Blom
  * License: <GPL-3></GPL-3>.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'wpf_dogbreed_fill_VERSION', '0.1.1' );
+define( 'wpf_dogbreed_fill_VERSION', '0.1.3' );
 
 /**
  * This plugin is basically a filter which fills the selection options on
@@ -48,7 +48,7 @@ if (!in_array($language_code, $allowed_languages)) {
 }
 
 if ( ! file_exists( get_home_path() . 'uploads/wpf/dogbreeds.json' ) ) {
-    $dog_breeds_file = plugin_dir_path( __FILE__ ) . 'data/fci_breeds_' + $language_code + '.json';
+    $dog_breeds_file = plugin_dir_path( __FILE__ ) . 'data/fci_dataset_' . $language_code . '.json';
 } else {
     $dog_breeds_file = get_home_path() . 'uploads/wpf/dogbreeds.json';
 }
