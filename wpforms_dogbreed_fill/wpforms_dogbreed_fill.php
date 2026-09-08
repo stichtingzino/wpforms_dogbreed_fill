@@ -48,7 +48,7 @@ if (!in_array($language_code, $allowed_languages)) {
 }
 
 if ( ! file_exists( get_home_path() . 'uploads/wpf/dogbreeds.json' ) ) {
-    $dog_breeds_file = plugin_dir_path( __FILE__ ) . 'data/fci_breeds_' + $language_code + '.json';
+    $dog_breeds_file = plugin_dir_path( __FILE__ ) . 'data/fci_dataset_' . $language_code . '.json';
 } else {
     $dog_breeds_file = get_home_path() . 'uploads/wpf/dogbreeds.json';
 }
