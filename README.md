@@ -17,7 +17,7 @@ This repository contains a high-performance Python data engineering tool (`get-d
 
 ## Architecture Overview
 
-This tool bypasses traditional LLM dependencies to guarantee **100% databetrouwbaarheid** and zero linguistic hallucinations. It operates via a hybrid, deterministic pipeline:
+This tool converts or scrapes the correct dog-breed lists per group relevant to the selected language, the sources are either the FCI itself or (for the Dutch language) the "Raad van beheer" in the Netherlands:
 
 * **Static Convert Track (`en`, `fr`, `de`):** Streams raw FCI datasets directly from authoritative upstream CSV repositories, extracting and grouping breed taxonomies on-the-fly via Pandas.
 * **Live Net-Scrape Track (`nl`):** Connects directly to the live registry of the Dutch Kennel Club (*Raad van Beheer op Kynologisch Gebied*). It parses localized HTML structures to dynamic data nodes, perfectly capturing regional sub-varieties (such as the 9 distinct Teckel/Dachshund classifications) and rendering native typography (e.g., *Aïdi*, *Alpenländische Dachsbracke*) flawlessly.
@@ -111,6 +111,8 @@ The tool synchronizes clean, structured JSON payloads directly to your active di
    - To bind the generated breed dataset to a select/dropdown menu, add the token keyword **`breeds`** anywhere inside your WPForms Field Label or Description.
    - *Example configurations:* "Dog Breeds", "Select a Breed", or "Select your breeds asset".
 
+3. **Dogbreed lists uploads**
+   -  You can upload your own json file to be used for the forms if this does not exist a file is used selected by language of the browser, otherwise the one uploaded to "uploads/wpf/dogbreeds.json" is used. This file must, however, conform to the above strict json format.
 ---
 
 ## Data Verification
