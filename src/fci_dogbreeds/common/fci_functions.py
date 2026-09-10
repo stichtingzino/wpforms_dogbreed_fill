@@ -11,19 +11,20 @@ import json
 import logging
 import re
 import ssl
-import urllib.request
 import urllib.error
-from typing import Dict, Any, List
+import urllib.request
+from typing import Any
+
 import pandas as pd
 
+import fci_dogbreeds.config as project_config
 from fci_dogbreeds.config import (
-    FCI_SOURCES,
     COUNTRY_AUTH_URLS,
     COUNTRY_GROUP_URLS,
-    FCI_NOMENCLATURE_URL_TEMPLATE,
     FCI_JSON_OUTPUT_TEMPLATE,
+    FCI_NOMENCLATURE_URL_TEMPLATE,
+    FCI_SOURCES,
 )
-import fci_dogbreeds.config as project_config
 
 logger = logging.getLogger(__name__)
 
@@ -39,12 +40,12 @@ def load_fci_dataframe(source_path: str) -> pd.DataFrame:
     """Loads FCI CSV data into a Pandas DataFrame."""
     try:
         return pd.read_csv(source_path)
-    except (FileNotFoundError, pd.errors.EmptyDataError, IOError) as err:
+    except (FileNotFoundError, pd.errors.EmptyDataError, OSError) as err:
         logger.error("Data resource mapping failure on '%s': %s", source_path, err)
         raise
 
 
-def save_json_matrix(data: Dict[str, Any], output_json_path: str) -> None:
+def save_json_matrix(data: dict[str, Any], output_json_path: str) -> None:
     """Safely writes a structured dictionary to disk as a clean JSON file."""
     try:
         with open(output_json_path, "w", encoding="utf-8") as f:
@@ -52,14 +53,14 @@ def save_json_matrix(data: Dict[str, Any], output_json_path: str) -> None:
         logger.info(
             "Successfully synchronized dataset output to: '%s'", output_json_path
         )
-    except IOError as io_err:
+    except OSError as io_err:
         logger.error(
             "Critical write failure on target '%s': %s", output_json_path, io_err
         )
         raise
 
 
-def _scrape_fci_groups_metadata(lang: str) -> Dict[int, str]:
+def _scrape_fci_groups_metadata(lang: str) -> dict[int, str]:
     """Live scraps group numbers and localized names directly from fci.be nomenclature."""
     url = FCI_NOMENCLATURE_URL_TEMPLATE.format(lang=lang.lower())
     logger.info("Fetching dynamic FCI group metadata schema from: '%s'", url)
@@ -72,11 +73,11 @@ def _scrape_fci_groups_metadata(lang: str) -> Dict[int, str]:
 
         with urllib.request.urlopen(req, timeout=15, context=context) as response:
             html_content = response.read().decode("utf-8")
-    except (urllib.error.URLError, IOError) as net_err:
+    except (urllib.error.URLError, OSError) as net_err:
         logger.error("FCI structural metadata fetch failed: %s", net_err)
         return {}
 
-    metadata_map: Dict[int, str] = {}
+    metadata_map: dict[int, str] = {}
     for i in range(10):
         group_num = i + 1
         span_id = f"ContentPlaceHolder1_GroupesRepeater_Label1_{i}"
@@ -99,7 +100,7 @@ def _scrape_fci_groups_metadata(lang: str) -> Dict[int, str]:
 # Sluit direct en onafgebroken aan onder Deel 1 in src/fci_dogbreeds/common/fci_functions.py
 
 
-def _scrape_rvb_groups_metadata(url: str) -> Dict[int, str]:
+def _scrape_rvb_groups_metadata(url: str) -> dict[int, str]:
     """Live scraps Dutch group names directly from the Raad van Beheer overzichtspagina."""
     logger.info("Fetching dynamic Raad van Beheer group metadata from: '%s'", url)
     req = urllib.request.Request(url, headers=HEADERS)
@@ -109,7 +110,7 @@ def _scrape_rvb_groups_metadata(url: str) -> Dict[int, str]:
         context.verify_mode = ssl.CERT_NONE
         with urllib.request.urlopen(req, timeout=15, context=context) as response:
             html_content = response.read().decode("utf-8")
-    except (urllib.error.URLError, IOError) as net_err:
+    except (urllib.error.URLError, OSError) as net_err:
         logger.error("RvB structural metadata fetch failed: %s", net_err)
         return {}
 
@@ -119,7 +120,7 @@ def _scrape_rvb_groups_metadata(url: str) -> Dict[int, str]:
         re.IGNORECASE,
     )
 
-    metadata_map: Dict[int, str] = {}
+    metadata_map: dict[int, str] = {}
     for match in rvb_pattern.finditer(html_content):
         gid = int(match.group("gid"))
         gname = html.unescape(match.group("gname")).strip().title()
@@ -146,7 +147,7 @@ def convert_static_fci_csv(lang: str) -> None:
 
     df = load_fci_dataframe(source_url)
     output_json_path = FCI_JSON_OUTPUT_TEMPLATE.format(lang=lang)
-    raw_db: Dict[str, Any] = {}
+    raw_db: dict[str, Any] = {}
 
     try:
         group_cols = [
@@ -200,9 +201,7 @@ def convert_static_fci_csv(lang: str) -> None:
                 continue
 
             group_key = f"group_{group_id}"
-            breeds_list: List[str] = (
-                group_df["name_clean"].drop_duplicates().sort_values().tolist()
-            )
+            breeds_list: list[str] = sorted(group_df["name_clean"].drop_duplicates().tolist())
 
             raw_db[group_key] = {
                 "fci_group": int(group_id),
@@ -254,7 +253,7 @@ def extract_national_kennel_club_registry(lang: str) -> None:
         context.verify_mode = ssl.CERT_NONE
         with urllib.request.urlopen(req, timeout=15, context=context) as response:
             html_content = response.read().decode("utf-8")
-    except (urllib.error.URLError, IOError) as net_err:
+    except (urllib.error.URLError, OSError) as net_err:
         logger.critical("Network infrastructure breakdown: %s", net_err)
         raise
 
@@ -264,14 +263,13 @@ def extract_national_kennel_club_registry(lang: str) -> None:
         re.IGNORECASE,
     )
 
-    structured_db: Dict[str, Any] = {}
+    structured_db: dict[str, Any] = {}
     for gid, gname in rvb_groups.items():
         structured_db[f"group_{gid}"] = {
             "fci_group": gid,
             "group_name": gname,
             "breeds": [],
         }
-
 
     alias_dict = getattr(project_config, f"ALIAS_LIST_{target_lang.upper()}", {})
 
@@ -303,7 +301,7 @@ def extract_national_kennel_club_registry(lang: str) -> None:
     if total_counter > 0:
         # Uw schitterende .values() sortering uitgevoerd!
         for gval in structured_db.values():
-            gval["breeds"] = sorted(list(gval["breeds"]))
+            gval["breeds"] = sorted(gval["breeds"])
 
         sorted_db = {
             k: structured_db[k]

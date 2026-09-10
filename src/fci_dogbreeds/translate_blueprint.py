@@ -8,12 +8,18 @@ and live HTML token scraping based on target country support vectors.
 
 import logging
 import sys
+
 import click
 
-from fci_dogbreeds.config import SUPPORTED_LANGUAGES, FCI_SOURCES, COUNTRY_AUTH_URLS, LOGLEVEL
 from fci_dogbreeds.common.fci_functions import (
     convert_static_fci_csv,
     extract_national_kennel_club_registry,
+)
+from fci_dogbreeds.config import (
+    COUNTRY_AUTH_URLS,
+    FCI_SOURCES,
+    LOGLEVEL,
+    SUPPORTED_LANGUAGES,
 )
 
 logger = logging.getLogger(__name__)
@@ -25,7 +31,7 @@ except AttributeError:
     logger.error(
         "Invalid log level: %s, current level: %s remains active.",
         LOGLEVEL,
-        logging.getLevelName(logger.getEffectiveLevel())
+        logging.getLevelName(logger.getEffectiveLevel()),
     )
 
 
@@ -58,7 +64,7 @@ def cli(lang: str) -> None:
         try:
             extract_national_kennel_club_registry(lang=selected_lang)
             logger.info("🎉 Authoritative live database successfully synchronized!")
-        except (ValueError, IOError) as err:
+        except (ValueError, OSError) as err:
             logger.critical("Scraper pipeline execution failure: %s", err)
             sys.exit(1)
 
@@ -70,7 +76,7 @@ def cli(lang: str) -> None:
         try:
             convert_static_fci_csv(lang=selected_lang)
             logger.info("🎉 Static repository conversion completed successfully!")
-        except (ValueError, KeyError, IOError) as err:
+        except (ValueError, KeyError, OSError) as err:
             logger.critical("Static transformation block failure: %s", err)
             sys.exit(1)
 
