@@ -17,6 +17,16 @@ function wpf_dogbreed_fill_register_settings() {
         )
     );
 
+    register_setting(
+        'wpf_dogbreed_fill_settings',
+        'wpf_dogbreed_fill_language',
+        array(
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => 'Auto',
+        )
+    );
+
     add_settings_section(
         'wpf_dogbreed_fill_main_section',
         __( 'FCI group selection', 'wpforms_dogbreed_fill' ),
@@ -28,6 +38,14 @@ function wpf_dogbreed_fill_register_settings() {
         'wpf_dogbreed_fill_selected_groups',
         __( 'Select FCI groups to include', 'wpforms_dogbreed_fill' ),
         'wpf_dogbreed_fill_render_group_field',
+        'wpf_dogbreed_fill_settings',
+        'wpf_dogbreed_fill_main_section'
+    );
+
+    add_settings_field(
+        'wpf_dogbreed_fill_language',
+        __( 'Plugin Language', 'wpforms_dogbreed_fill' ),
+        'wpf_dogbreed_fill_render_language_field',
         'wpf_dogbreed_fill_settings',
         'wpf_dogbreed_fill_main_section'
     );
@@ -72,6 +90,33 @@ function wpf_dogbreed_fill_render_group_field() {
         echo esc_html( $group_label );
         echo '</label>';
     }
+}
+
+function wpf_dogbreed_fill_render_language_field() {
+    $available_languages = wpf_dogbreed_fill_get_available_languages();
+    $selected_language = get_option( 'wpf_dogbreed_fill_language', 'Auto' );
+
+    echo '<select name="wpf_dogbreed_fill_language">';
+    echo '<option value="Auto" ' . selected( $selected_language, 'Auto', false ) . '>' . __( 'Auto', 'wpforms_dogbreed_fill' ) . '</option>';
+
+    foreach ( $available_languages as $language_code ) {
+        echo '<option value="' . esc_attr( $language_code ) . '" ' . selected( $selected_language, $language_code, false ) . '>' . esc_html( strtoupper( $language_code ) ) . '</option>';
+    }
+
+    echo '</select>';
+}
+
+function wpf_dogbreed_fill_get_available_languages() {
+    $language_files = glob( plugin_dir_path( __FILE__ ) . '../data/fci_dataset_*.json' );
+    $languages = array_map( function( $file ) {
+        return basename( $file, '.json' );
+    }, $language_files );
+
+    $languages = array_map( function( $file ) {
+        return substr( $file, 13 ); // Remove 'fci_dataset_' prefix
+    }, $languages );
+
+    return $languages;
 }
 
 function wpf_dogbreed_fill_add_settings_page() {
