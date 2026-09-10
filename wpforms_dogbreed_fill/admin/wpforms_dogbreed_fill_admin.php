@@ -106,18 +106,6 @@ function wpf_dogbreed_fill_render_language_field() {
     echo '</select>';
 }
 
-function wpf_dogbreed_fill_get_available_languages() {
-    $language_files = glob( plugin_dir_path( __FILE__ ) . '../data/fci_dataset_*.json' );
-    $languages = array_map( function( $file ) {
-        return basename( $file, '.json' );
-    }, $language_files );
-
-    $languages = array_map( function( $file ) {
-        return substr( $file, 13 ); // Remove 'fci_dataset_' prefix
-    }, $languages );
-
-    return $languages;
-}
 
 function wpf_dogbreed_fill_add_settings_page() {
     add_options_page(

@@ -57,6 +57,19 @@ function wpf_dogbreed_fill_get_language_code() {
     return $language_code;
 }
 
+function wpf_dogbreed_fill_get_available_languages() {
+    $language_files = glob( plugin_dir_path( __FILE__ ) . 'data/fci_dataset_*.json' );
+    $languages = array_map( function( $file ) {
+        return basename( $file, '.json' );
+    }, $language_files );
+
+    $languages = array_map( function( $file ) {
+        return substr( $file, 13 ); // Remove 'fci_dataset_' prefix
+    }, $languages );
+
+    return $languages;
+}
+
 $language_code = wpf_dogbreed_fill_get_language_code();
 $dog_breeds_file = plugin_dir_path( __FILE__ ) . 'data/fci_dataset_' . $language_code . '.json';
 
