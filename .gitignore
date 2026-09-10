@@ -99,3 +99,4 @@ wp-config-sample.php
 .continueignore
 .continue/
 src/scraper*
+.zed*
