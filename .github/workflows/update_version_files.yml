@@ -33,7 +33,7 @@ jobs:
 
       - name: Update WordPress Plugin Version in PHP File
         run: |
-          sed -i -E "s/(Version:[[:space:]]*)[0-9.]+(-[a-zA-Z0-9]+)?/\1$VERSION/g" wpforms_dogbreed_fill/wpforms_dogbreed_fill.php
+          sed -i -E "s/(Version:[[:space:]]*)[0-9.]+(-[a-zA-Z0-9]+[^#]*)?/\1$VERSION/g" wpforms_dogbreed_fill/wpforms_dogbreed_fill.php
           echo "Updated wpforms_dogbreed_fill.php with version: $VERSION"
 
       - name: Commit and push changes
