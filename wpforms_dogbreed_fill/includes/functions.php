@@ -58,6 +58,21 @@ function get_fci_dog_breeds_by_group( $group_number ) {
     return [];
 }
 
+function wpf_dogbreed_fill_get_available_languages() {
+    $data_dir = WPFORMS_DOGBREED_FILL_DIR . 'data/';
+    $files = glob( $data_dir . 'fci_dataset_*.json' );
+
+    $languages = [];
+    foreach ( $files as $file ) {
+        $filename = basename( $file );
+        if ( preg_match( '/fci_dataset_([a-z]{2})\.json/', $filename, $matches ) ) {
+            $languages[] = $matches[1];
+        }
+    }
+
+    return array_unique( $languages );
+}
+
 function wpf_dogbreed_fill_get_available_groups() {
     $dog_breeds_file = WPFORMS_DOGBREED_FILL_DIR . 'data/fci_dataset_' .  wpf_dogbreed_fill_get_language_code() . '.json';
 
