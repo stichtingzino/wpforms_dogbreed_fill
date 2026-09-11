@@ -106,7 +106,6 @@ function wpf_dogbreed_fill_render_language_field() {
     echo '</select>';
 }
 
-
 function wpf_dogbreed_fill_add_settings_page() {
     add_options_page(
         'FCI Dog Breed Fill',

@@ -26,150 +26,18 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'wpf_dogbreed_fill_VERSION', '0.1.3' );
 
+// Define the plugin directory path
+define( 'WPFORMS_DOGBREED_FILL_DIR', plugin_dir_path( __FILE__ ) );
+define( 'WPFORMS_DOGBREED_FILL_URL', plugin_dir_url( __FILE__ ) );
+
+require_once WPFORMS_DOGBREED_FILL_DIR . 'includes/functions.php';
+
 /**
  * This plugin is basically a filter which fills the selection options on
  * a WPForms form of a specific type.
  * The source file for the breeds file is searched for in uploads/wpf first, if it
  * does not exist there, it will be searched for in the plugin directory.
  */
-function wpf_dogbreed_fill_get_language_code() {
-    $selected_language = get_option( 'wpf_dogbreed_fill_language', 'Auto' );
-
-    if ( $selected_language !== 'Auto' ) {
-        return $selected_language;
-    }
-
-    // 1. Get the current user or site locale (e.g., 'nl_NL' or 'en_US')
-    $locale = get_user_locale(); // Alternatively, use get_locale() for general site settings
-
-    // 2. Extract the part before the underscore and convert to lowercase
-    $locale_parts = explode('_', $locale);
-    $language_code = strtolower($locale_parts[0]);
-
-    // 3. Define the allowed language codes
-    $allowed_languages = wpf_dogbreed_fill_get_available_languages();
-
-    // 4. Verify if the language is allowed, otherwise fall back to 'nl'
-    if (!in_array($language_code, $allowed_languages)) {
-        $language_code = 'nl';
-    }
-
-    return $language_code;
-}
-
-function wpf_dogbreed_fill_get_available_languages() {
-    $language_files = glob( plugin_dir_path( __FILE__ ) . 'data/fci_dataset_*.json' );
-    $languages = array_map( function( $file ) {
-        return basename( $file, '.json' );
-    }, $language_files );
-
-    $languages = array_map( function( $file ) {
-        return substr( $file, 13 ); // Remove 'fci_dataset_' prefix
-    }, $languages );
-
-    return $languages;
-}
-
-$language_code = wpf_dogbreed_fill_get_language_code();
-$dog_breeds_file = plugin_dir_path( __FILE__ ) . 'data/fci_dataset_' . $language_code . '.json';
-
-// This function retrieves FCI dog breeds for a specific group number from the JSON file.
-function get_fci_dog_breeds_by_group( $group_number ) {
-    global $dog_breeds_file;
-
-    if ( ! file_exists( $dog_breeds_file ) ) {
-        return [];
-    }
-
-    $json_data = file_get_contents( $dog_breeds_file );
-    $breeds = json_decode( $json_data, true );
-
-    if ( ! is_array( $breeds ) || ! isset( $breeds['fci_groep'] ) || ! is_array( $breeds['fci_groep'] ) ) {
-        return [];
-    }
-
-    $group_key = (string) $group_number;
-
-    if ( isset( $breeds['fci_groep'][ $group_key ] ) ) {
-        return $breeds['fci_groep'][ $group_key ];
-    }
-
-    if ( isset( $breeds['fci_groep'][ $group_number ] ) ) {
-        return $breeds['fci_groep'][ $group_number ];
-    }
-
-    return [];
-}
-
-function wpf_dogbreed_fill_get_available_groups() {
-    global $dog_breeds_file;
-
-    if ( ! file_exists( $dog_breeds_file ) ) {
-        return [];
-    }
-
-    $json_data = file_get_contents( $dog_breeds_file );
-    $breeds = json_decode( $json_data, true );
-
-    if ( ! is_array( $breeds ) || ! isset( $breeds['fci_groep'] ) || ! is_array( $breeds['fci_groep'] ) ) {
-        return [];
-    }
-
-    $groups = [];
-    foreach ( $breeds['fci_groep'] as $group_number => $group_breeds ) {
-        $groups[ (string) $group_number ] = sprintf( 'FCI Group %s', $group_number );
-    }
-
-    ksort( $groups );
-    return $groups;
-}
-
-function wpf_dogbreed_fill_get_available_languages() {
-    $language_files = glob( plugin_dir_path( __FILE__ ) . 'data/fci_dataset_*.json' );
-    $languages = array_map( function( $file ) {
-        return basename( $file, '.json' );
-    }, $language_files );
-
-    $languages = array_map( function( $file ) {
-        return substr( $file, 13 ); // Remove 'fci_dataset_' prefix
-    }, $languages );
-
-    return $languages;
-}
-
-function wpf_dogbreed_fill_get_selected_groups() {
-    $selected_groups = get_option( 'wpf_dogbreed_fill_selected_groups', array( 1 ) );
-
-    if ( ! is_array( $selected_groups ) ) {
-        $selected_groups = array( 1 );
-    }
-
-    $selected_groups = array_map( 'absint', $selected_groups );
-    $selected_groups = array_values( array_unique( array_filter( $selected_groups, function( $group ) {
-        return $group > 0;
-    } ) ) );
-
-    if ( empty( $selected_groups ) ) {
-        $selected_groups = array( 1 );
-    }
-
-    sort( $selected_groups );
-    return $selected_groups;
-}
-
-function wpf_dogbreed_fill_get_selected_group_breeds() {
-    $selected_groups = wpf_dogbreed_fill_get_selected_groups();
-    $fci_breeds = [];
-
-    foreach ( $selected_groups as $group_number ) {
-        $group_breeds = get_fci_dog_breeds_by_group( $group_number );
-        if ( is_array( $group_breeds ) && ! empty( $group_breeds ) ) {
-            $fci_breeds = array_merge( $fci_breeds, $group_breeds );
-        }
-    }
-
-    return $fci_breeds;
-}
 
 function dynamic_fci_breeds_checkboxes( $properties, $field, $form_data ) {
     // This routine will check for the term "ras" or "breed" in the label of the field,
