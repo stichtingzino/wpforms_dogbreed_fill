@@ -17,12 +17,6 @@ from fci_dogbreeds.common.fci_functions import (
     convert_static_fci_csv,
     extract_national_kennel_club_registry,
 )
-from fci_dogbreeds.config import (
-    COUNTRY_AUTH_URLS,
-    FCI_SOURCES,
-    LOGLEVEL,
-    SUPPORTED_LANGUAGES,
-)
 
 logger = logging.getLogger(__name__)
 
