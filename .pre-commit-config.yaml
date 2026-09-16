@@ -3,17 +3,19 @@ repos:
     hooks:
       - id: sync-version
         name: Synchroniseer versie naar WordPress en Python
-        language: system
+        language: python
         files: ^VERSION$
         entry: |
-          bash -c "
-          VERSION=\$(cat VERSION | tr -d '[:space:]')
-          python3 -c \"
-          import re
-          for f_path in ['src/fci_dogbreeds/__init__.py', 'wpforms_dogbreed_fill/wpforms_dogbreed_fill.php']:
-              with open(f_path, 'r') as f: c = f.read()
-              c = re.sub(r'__version__\s*=\s*[\'\"][^\'\"]+[\'\"]', f'__version__ = \\\"\$VERSION\\\"', c)
-              c = re.sub(r'(Version:\s*)[^\s\n\r]+', f'\\\\1\$VERSION', c)
-              c = re.sub(r'(define\(\s*[\'\"]WPFORMS_DOGBREED_FILL_VERSION[\'\"]\s*,\s*[\'\"])[^\'\"]+([\'\"]\s*\);)', f'\\\\1\$VERSION\\\\2', c)
-              with open(f_path, 'w') as f: f.write(c)
-          \" "
+          python3 -c "
+          import re, pathlib
+          v = pathlib.Path('VERSION').read_text().strip()
+          for p in ['src/fci_dogbreeds/__init__.py', 'wpforms_dogbreed_fill/wpforms_dogbreed_fill.php']:
+              f = pathlib.Path(p)
+              if f.is_file():
+                  c = f.read_text()
+                  c = re.sub(r'__version__\s*=\s*[\'\"][^\'\"]+[\'\"]', f'__version__ = \"{v}\"', c)
+                  c = re.sub(r'(Version:\s*)[^\s\n\r]+', r'\g<1>' + v, c)
+                  c = re.sub(r'(define\(\s*[\'\"][^\'\"]*VERSION[\'\"]\s*,\s*[\'\"])[^\'\"]+([\'\"]\s*\);)', r'\g<1>' + v + r'\g<2>', c, flags=re.IGNORECASE)
+                  f.write_text(c)
+                  print(f'✅ Versie gesynchroniseerd in: {p}')
+          "
