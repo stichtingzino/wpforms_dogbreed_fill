@@ -63,6 +63,7 @@ max-line-length = 88
 exclude = ["venv/*", ".git/*", "__pycache__/*"]
 
 [tool.pytest.ini_options]
+pythonpath = ["src"]
 asyncio_mode = "auto"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
@@ -78,3 +79,4 @@ exclude_lines = [
     "raise NotImplementedError",
     "if __name__ == .__main__.:",
 ]
+
