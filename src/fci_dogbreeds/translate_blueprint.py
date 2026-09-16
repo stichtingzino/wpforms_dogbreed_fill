@@ -11,15 +11,11 @@ import sys
 
 import click
 
+from fci_dogbreeds import __version__
+from fci_dogbreeds.config import SUPPORTED_LANGUAGES, FCI_SOURCES, COUNTRY_AUTH_URLS, LOGLEVEL
 from fci_dogbreeds.common.fci_functions import (
     convert_static_fci_csv,
     extract_national_kennel_club_registry,
-)
-from fci_dogbreeds.config import (
-    COUNTRY_AUTH_URLS,
-    FCI_SOURCES,
-    LOGLEVEL,
-    SUPPORTED_LANGUAGES,
 )
 
 logger = logging.getLogger(__name__)
@@ -36,6 +32,7 @@ except AttributeError:
 
 
 @click.command()
+@click.version_option()
 @click.option(
     "--lang",
     type=click.Choice(list(SUPPORTED_LANGUAGES.keys()), case_sensitive=False),

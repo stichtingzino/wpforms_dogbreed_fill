@@ -1,7 +1,7 @@
 {
   "group_1": {
     "fci_group": 1,
-    "group_name": "Herdershonden en veedrijvers",
+    "group_name": "Herdershonden En Veedrijvers",
     "breeds": [
       "Australian Cattle Dog",
       "Australian Kelpie",
@@ -61,7 +61,7 @@
   },
   "group_2": {
     "fci_group": 2,
-    "group_name": "Pinschers, schnauzers, molossers",
+    "group_name": "Pinschers, Schnauzers, Molossers En Sennenhonden",
     "breeds": [
       "Affenpinscher",
       "Appenzeller Sennenhond",
@@ -172,7 +172,7 @@
   },
   "group_4": {
     "fci_group": 4,
-    "group_name": "Teckels",
+    "group_name": "Dashonden",
     "breeds": [
       "Dashond, Korthaar",
       "Dashond, Langhaar",
@@ -187,7 +187,7 @@
   },
   "group_5": {
     "fci_group": 5,
-    "group_name": "Spitzen en oertypen",
+    "group_name": "Spitsen En Oertypen",
     "breeds": [
       "Akita",
       "Alaska Malamute",
@@ -259,7 +259,7 @@
   },
   "group_6": {
     "fci_group": 6,
-    "group_name": "Lopende honden en zweethonden",
+    "group_name": "Lopende Honden En Zweethonden",
     "breeds": [
       "Alpenländische Dachsbracke",
       "American Foxhound",
@@ -344,7 +344,7 @@
   },
   "group_7": {
     "fci_group": 7,
-    "group_name": "Voorstaande honden",
+    "group_name": "Voorstaande Honden",
     "breeds": [
       "Bracco Italiano",
       "Braque D'Auvergne",
@@ -365,6 +365,7 @@
       "Epagneul De Pont-Audemer",
       "Epagneul Français",
       "Epagneul Picard",
+      "Friese Stabij / Stabijhoun",
       "Gammel Dansk Hønsehund",
       "Gordon Setter",
       "Griffon Korthals",
@@ -378,7 +379,6 @@
       "Pointer",
       "Slovenský Hrubosrstý Stavac",
       "Spinone Italiano",
-      "Stabijhoun",
       "Vizsla Draadhaar",
       "Vizsla Korthaar",
       "Weimaraner, Korthaar",
@@ -387,7 +387,7 @@
   },
   "group_8": {
     "fci_group": 8,
-    "group_name": "Retrievers, spaniels en waterhonden",
+    "group_name": "Retrievers, Spaniels En Waterhonden",
     "breeds": [
       "Amerikaanse Cocker Spaniel",
       "Amerikaanse Water Spaniel",

@@ -15,12 +15,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # 1. Check if the VERSION file has changed
       - name: Check if VERSION changed
         id: changes
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@v4
         with:
           filters: |
             version_changed:
@@ -29,7 +29,7 @@ jobs:
       # 2. If VERSION has changed, wait for update_version to finish
       - name: Wait for Update Version Files
         if: steps.changes.outputs.version_changed == 'true'
-        uses: lewagon/wait-on-check-action@v1.3.4
+        uses: lewagon/wait-on-check-action@v1.9.1
         with:
           ref: ${{ github.sha }}
           check-name: 'update-version'  # The exact name of the job in update_version_files.yml

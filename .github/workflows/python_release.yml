@@ -12,12 +12,12 @@ jobs:
       contents: write  # Needed to modify files and create releases
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # 1. Check if the VERSION file has changed
       - name: Check if VERSION changed
         id: changes
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@v4
         with:
           filters: |
             version_changed:
@@ -26,7 +26,7 @@ jobs:
       # 2. If VERSION has changed, wait for update_version to finish
       - name: Wait for Update Version Files
         if: steps.changes.outputs.version_changed == 'true'
-        uses: lewagon/wait-on-check-action@v1.3.4
+        uses: lewagon/wait-on-check-action@v1.9.1
         with:
           ref: ${{ github.sha }}
           check-name: 'update-version'  # The exact name of the job in update_version_files.yml
@@ -34,9 +34,9 @@ jobs:
           wait-interval: 10  # Check every 10 seconds
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v7
         with:
-          python-version: '3.10'  # Use the Python version specified in pyproject.toml
+          python-version: '3.12'  # Use the Python version specified in pyproject.toml
 
       - name: Install dependencies
         run: |
