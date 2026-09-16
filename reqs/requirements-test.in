@@ -2,3 +2,4 @@ pylance
 black
 flake8
 pylint
+pre-commit
