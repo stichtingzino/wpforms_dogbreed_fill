@@ -24,7 +24,7 @@ try:
     __version__ = version(__project__)
 except PackageNotFoundError:
     # This happens when the package is not yet installed locally
-    __version__ = "0.1.4-rc3"
+    __version__ = "0.1.5"
 
 # ... (Keep your existing imports and dotenv logic above exactly the same) ...
 

@@ -12,7 +12,7 @@
  * Release Asset: true
  * Primary Branch: main
  * Description: A plugin to fill dog breed options in WPForms.
- * Version: 0.1.4-rc3
+ * Version: 0.1.5
  * Author: Mark Blom
  * License: <GPL-3></GPL-3>.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -27,7 +27,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'wpf_dogbreed_fill_VERSION', '0.1.4-rc3' );
+define( 'wpf_dogbreed_fill_VERSION', '0.1.5' );
 
 // Define the plugin directory path
 define( 'WPFORMS_DOGBREED_FILL_DIR', plugin_dir_path( __FILE__ ) );
