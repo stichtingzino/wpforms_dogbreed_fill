@@ -28,11 +28,8 @@ classifiers = [
     "Topic :: Database",
 ]
 dependencies = [
-    "google-genai>=0.1.0",
     "pydantic>=2.0.0",
-    "onepassword-sdk>=0.4.0",
     "python-dotenv>=1.0.0",
-    "openai>=3.7.0",
 ]
 
 [project.optional-dependencies]
@@ -42,10 +39,11 @@ dev = [
     "pylance>=0.1.0",
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
+    "pre-commit",
 ]
 
 [tool.hatch.version]
-path = "VERSION"
+path = "src/fci_dogbreeds/__init__.py"
 
 [project.scripts]
 get-dogbreeds = "fci_dogbreeds.translate_blueprint:cli"

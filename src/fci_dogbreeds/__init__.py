@@ -20,17 +20,9 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 # ... (Keep your existing imports and dotenv logic above exactly the same) ...
 
+__version__ = "0.1.5"
 __project__ = "fci-dogbreeds"
 
-try:
-    __version__ = version(__project__)
-except PackageNotFoundError:
-    # Fallback wanneer lokaal nog niet geïnstalleerd: lees het VERSION bestand uit de root
-    version_file = Path(__file__).resolve().parents[2] / "VERSION"
-    if version_file.exists():
-        __version__ = version_file.read_text().strip()
-    else:
-        __version__ = "0.0.0-dev"
 
 DEFAULT_LOG_FILES = [f"{__project__}.log", f"{__project__}-debug.log"]
 DEFAULT_LOG_LEVEL = "INFO"
