@@ -41,10 +41,8 @@ dev = [
     "pre-commit",
 ]
 
-[tool.hatch.version]
-source = "regex"
-path = "VERSION"
-pattern = '(?P<version>\d+\.\d+\.\d+)'
+[tool.setuptools.dynamic]
+version = {file = ["VERSION"]}
 
 [project.scripts]
 get-dogbreeds = "fci_dogbreeds.translate_blueprint:cli"
