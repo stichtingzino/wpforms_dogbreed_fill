@@ -133,3 +133,59 @@ function wpf_dogbreed_fill_get_selected_group_breeds() {
 
     return $fci_breeds;
 }
+
+/**
+ * Schakel automatische updates in rechtstreeks vanaf de GitHub Releases API
+ */
+add_filter('pre_set_site_transient_update_plugins', function($transient) {
+    if (empty($transient->checked)) {
+        return $transient;
+    }
+
+    $plugin_slug = 'wpforms_dogbreed_fill/wpforms_dogbreed_fill.php';
+    
+    // Pak dynamisch het huidige versienummer van de plugin op de server
+    $current_version = $transient->checked[$plugin_slug] ?? '0.1.3';
+
+    // We bouwen de GitHub API URL handmatig op om filter-stripping te voorkomen
+    $api_url = 'https://api.github.com/repos/stichtingzino/wpforms_dogbreed_fill/releases/latest';
+    
+    $args = [
+        'headers' => ['User-Agent' => 'WordPress/' . get_bloginfo('version')]
+    ];
+    
+    $response = wp_remote_get($api_url, $args);
+    
+    if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
+        return $transient;
+    }
+
+    $release_data = json_decode(wp_remote_retrieve_body($response));
+    $new_version = ltrim($release_data->tag_name, 'v');
+
+    // Als de versie op GitHub hoger is dan lokaal, injecteer de update-data
+    if (version_compare($current_version, $new_version, '<')) {
+        $obj = new stdClass();
+        $obj->slug = 'wpforms_dogbreed_fill';
+        $obj->plugin = $plugin_slug;
+        $obj->new_version = $new_version;
+        
+        // De link naar de repository
+        $obj->url = 'https://github.com/stichtingzino/wpforms_dogbreed_fill';
+        
+        // Zoek naar jouw exacte zip-asset binnen de release bestanden
+        foreach ($release_data->assets as $asset) {
+            if ($asset->name === 'wpforms_dogbreed_fill.zip') {
+                $obj->package = $asset->browser_download_url;
+                break;
+            }
+        }
+
+        if (!empty($obj->package)) {
+            $transient->response[$plugin_slug] = $obj;
+        }
+    }
+
+    return $transient;
+});
+
