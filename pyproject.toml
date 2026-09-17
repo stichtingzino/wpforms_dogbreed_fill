@@ -42,7 +42,7 @@ dev = [
 ]
 
 [tool.hatch.version]
-path = "src/fci_dogbreeds/__init__.py"
+path = "VERSION"
 
 [project.scripts]
 get-dogbreeds = "fci_dogbreeds.translate_blueprint:cli"
