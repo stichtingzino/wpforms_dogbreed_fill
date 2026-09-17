@@ -26,7 +26,16 @@ jobs:
 
       - name: Build Python package
         run: |
+          # 1. Zorg dat de dist map gegarandeerd leeg start
+          rm -rf dist/
+          
+          # 2. Voer de build uit
           python -m build
+          
+          # 3. CONTROLE: Toon in de logs welke bestanden er ECHT zijn aangemaakt
+          echo "=== AANGEMAAKTE BESTANDEN IN DIST ==="
+          ls -l dist/
+          echo "======================================"
 
       - name: Upload or Update Release Asset
         env:

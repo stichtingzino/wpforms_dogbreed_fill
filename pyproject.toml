@@ -42,7 +42,9 @@ dev = [
 ]
 
 [tool.hatch.version]
+source = "regex"
 path = "VERSION"
+pattern = '(?P<version>\d+\.\d+\.\d+)'
 
 [project.scripts]
 get-dogbreeds = "fci_dogbreeds.translate_blueprint:cli"
