@@ -1,20 +1,14 @@
 <?php
 /* 
- * 
- * @link        https://github.com/stichtingzino/wpforms_dogbreed_fill
- * @since       0.1.1
- * @package     WPF_Dog_Breed_Fill
- * 
- * @wordpress-plugin
  * Plugin Name: WPF Dog Breed Fill
- * Plugin URI: https://github.com/stichtingzino/wpforms_dogbreed_fill
+ * Plugin URI:        https://github.com/stichtingzino/wpforms_dogbreed_fill
  * GitHub Plugin URI: https://github.com/stichtingzino/wpforms_dogbreed_fill
  * Release Asset: true
  * Primary Branch: main
  * Description: A plugin to fill dog breed options in WPForms.
  * Version: 0.1.5
  * Author: Mark Blom
- * License: <GPL-3></GPL-3>.0+
+ * License: GPL-3.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
